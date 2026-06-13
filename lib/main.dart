@@ -366,7 +366,7 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
             _field("Height (cm)", _height),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
-              value: _gender,
+              initialValue: _gender,
               decoration: const InputDecoration(
                   labelText: "Gender", border: OutlineInputBorder()),
               items: ["Male", "Female"]
@@ -440,12 +440,12 @@ class _FitnessDashboardState extends State<FitnessDashboard> {
 
     // Accelerometer at ~50 Hz
     _accelSub = accelerometerEventStream(
-      samplingPeriod: SensorInterval.normalInterval,
+      samplingPeriod: SensorInterval.gameInterval,
     ).listen(_onAccel);
 
     // Gyroscope
     _gyroSub = gyroscopeEventStream(
-      samplingPeriod: SensorInterval.normalInterval,
+      samplingPeriod: SensorInterval.gameInterval,
     ).listen((e) => setState(() => _gyro = e));
 
     // Calorie timer: exactly once per second
@@ -458,7 +458,9 @@ class _FitnessDashboardState extends State<FitnessDashboard> {
     // GPS
     final perm = await Geolocator.requestPermission();
     if (perm == LocationPermission.denied ||
-        perm == LocationPermission.deniedForever) return;
+        perm == LocationPermission.deniedForever) {
+      return;
+    }
 
     _posSub = Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
@@ -635,8 +637,8 @@ class _ActivityBanner extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
       decoration: BoxDecoration(
-        color:        _color.withOpacity(0.15),
-        border:       Border.all(color: _color.withOpacity(0.4)),
+        color:        _color.withValues(alpha: 0.15),
+        border:       Border.all(color: _color.withValues(alpha: 0.4)),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(children: [
@@ -695,8 +697,8 @@ class _MetricTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color:        color.withOpacity(0.1),
-        border:       Border.all(color: color.withOpacity(0.3)),
+        color:        color.withValues(alpha: 0.1),
+        border:       Border.all(color: color.withValues(alpha: 0.3)),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Column(
@@ -751,7 +753,7 @@ class _SensorCard extends StatelessWidget {
                 ]);
               }).toList(),
             ),
-            if (extra != null) extra!,
+            ?extra,
           ],
         ),
       ),
