@@ -2,6 +2,24 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+     
+    <!-- Required for TYPE_STEP_COUNTER hardware sensor (Android 10+) -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+ 
+    <!-- Required for foreground service (if you add background tracking later) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+ 
+    <!-- Declares that this app uses the step counter hardware feature -->
+    <!-- android:required="false" so app still installs on devices without it -->
+    <uses-feature
+        android:name="android.hardware.sensor.stepcounter"
+        android:required="false" />
+ 
+    <!-- Your existing permissions (keep these too) -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+ 
+
     <application
         android:label="myapp1"
         android:name="${applicationName}"
